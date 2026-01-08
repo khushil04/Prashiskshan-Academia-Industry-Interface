@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_settings"
+        android:title="@string/title_settings"
+        android:icon="@android:drawable/ic_menu_preferences" />
+    <item
+        android:id="@+id/nav_profile_management"
+        android:title="@string/title_profile_management"
+        android:icon="@android:drawable/ic_menu_myplaces" />
+    <item
+        android:id="@+id/nav_help"
+        android:title="@string/title_help_support"
+        android:icon="@android:drawable/ic_menu_help" />
+    <item
+        android:id="@+id/nav_feedback"
+        android:title="@string/title_feedback"
+        android:icon="@android:drawable/ic_menu_send" />
+    <item
+        android:id="@+id/nav_about"
+        android:title="@string/title_about"
+        android:icon="@android:drawable/ic_menu_info_details" />
+</menu>
+

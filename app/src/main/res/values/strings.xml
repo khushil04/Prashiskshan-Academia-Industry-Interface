@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Prashiskshan</string>
+    
+    <!-- Common -->
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submit">Submit</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
+    <string name="loading">Loading…</string>
+    <string name="retry">Retry</string>
+    
+    <!-- Authentication -->
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="dont_have_account">Don\'t have an account? Register</string>
+    <string name="already_have_account">Already have an account? Login</string>
+    <string name="welcome_back">Welcome Back!</string>
+    <string name="login_subtitle">Login to continue to Prashiskshan</string>
+    <string name="create_account">Create Account</string>
+    <string name="register_subtitle">Join Prashiskshan today</string>
+    
+    <!-- Validation -->
+    <string name="error_email_required">Email is required</string>
+    <string name="error_email_invalid">Please enter a valid email</string>
+    <string name="error_password_required">Password is required</string>
+    <string name="error_password_short">Password must be at least 6 characters</string>
+    
+    <!-- User Types -->
+    <string name="student">Student</string>
+    <string name="faculty">Faculty</string>
+    <string name="industry">Industry</string>
+    <string name="select_user_type">Select User Type</string>
+    
+    <!-- Dashboard -->
+    <string name="dashboard">Dashboard</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    
+    <!-- Notification -->
+    <string name="default_notification_channel_id">prashiskshan_notifications</string>
+    <string name="notification_title">Prashiskshan</string>
+    
+    <!-- More / Settings -->
+    <string name="more">More</string>
+    <string name="title_settings">Settings</string>
+    <string name="title_profile_management">Profile Management</string>
+    <string name="title_help_support">Help &amp; Support</string>
+    <string name="title_feedback">Feedback</string>
+    <string name="title_about">About</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="app_settings">App Settings</string>
+    <string name="enable_notifications">Enable Notifications</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="account">Account</string>
+    <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="help_description">Find answers or contact support for assistance.</string>
+    <string name="contact_info">Contact Info</string>
+    <string name="name">Name</string>
+    <string name="message">Message</string>
+</resources>

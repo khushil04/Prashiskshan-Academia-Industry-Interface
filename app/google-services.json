@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "244468760355",
+    "project_id": "prashiskshan-app",
+    "storage_bucket": "prashiskshan-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244468760355:android:ab62897115a605d230d696",
+        "android_client_info": {
+          "package_name": "com.prashiskshan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcflhNYiHGmUAHCOidlxB7Q4KfzsKl7_M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
