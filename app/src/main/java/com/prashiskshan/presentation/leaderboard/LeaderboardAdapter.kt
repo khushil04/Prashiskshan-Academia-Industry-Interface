@@ -2,9 +2,11 @@ package com.prashiskshan.presentation.leaderboard
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.prashiskshan.R
 import com.prashiskshan.databinding.ItemLeaderboardBinding
 
 class LeaderboardAdapter(
@@ -22,36 +24,28 @@ class LeaderboardAdapter(
     }
 
     override fun onBindViewHolder(holder: LeaderboardViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), position + 1)
     }
 
     inner class LeaderboardViewHolder(private val binding: ItemLeaderboardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: LeaderboardItem) {
-            binding.tvRank.text = item.rank.toString()
+        fun bind(item: LeaderboardItem, rank: Int) {
+            binding.tvRank.text = rank.toString()
             binding.tvName.text = item.name
-            binding.tvCategory.text = item.category
-            binding.tvPoints.text = formatPoints(item.points)
+            binding.tvInternships.text = "${item.completedInternships} Internships Completed"
+            binding.tvPoints.text = item.points.toString()
             
             // Set different badge colors for top 3
-            val rankColor = when (item.rank) {
-                1 -> com.prashiskshan.R.color.rank_gold
-                2 -> com.prashiskshan.R.color.rank_silver
-                3 -> com.prashiskshan.R.color.rank_bronze
-                else -> com.prashiskshan.R.color.primary
+            val rankColor = when (rank) {
+                1 -> R.color.rank_gold
+                2 -> R.color.rank_silver
+                3 -> R.color.rank_bronze
+                else -> R.color.primary
             }
-            binding.tvRank.setBackgroundResource(rankColor)
+            binding.tvRank.backgroundTintList = ContextCompat.getColorStateList(binding.root.context, rankColor)
             
             binding.root.setOnClickListener {
                 onItemClick(item)
             }
         }
-        
-        private fun formatPoints(points: Int): String {
-            return when {
-                points >= 1000 -> String.format("%.1fK", points / 1000.0)
-                else -> points.toString()
-            }
-        }
     }
 }
-

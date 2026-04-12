@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.prashiskshan.data.model.Internship
 import com.prashiskshan.databinding.InternshipListItemBinding
 
 class InternshipAdapter(
@@ -13,7 +14,7 @@ class InternshipAdapter(
 
     object Diff : DiffUtil.ItemCallback<Internship>() {
         override fun areItemsTheSame(oldItem: Internship, newItem: Internship): Boolean =
-            oldItem.id == newItem.id
+            oldItem.internshipId == newItem.internshipId
 
         override fun areContentsTheSame(oldItem: Internship, newItem: Internship): Boolean =
             oldItem == newItem
@@ -35,12 +36,11 @@ class InternshipAdapter(
 
         fun bind(item: Internship) {
             binding.tvTitle.text = item.title
-            binding.tvMeta.text = "${item.company} • ${item.location} • ${item.domain}"
-            binding.tvStatus.text = item.status
+            binding.tvCompanyName.text = item.company
+            binding.tvLocation.text = "${item.location} • ${item.domain}"
+            binding.tvStatus.text = "${item.completionPercent}% Completed"
             binding.progressCompletion.progress = item.completionPercent
             binding.btnApply.setOnClickListener { onApplyClick(item) }
         }
     }
 }
-
-

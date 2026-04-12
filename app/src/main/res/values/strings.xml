@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Prashiskshan</string>
-    
+
     <!-- Common -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -13,7 +13,10 @@
     <string name="edit">Edit</string>
     <string name="loading">Loading…</string>
     <string name="retry">Retry</string>
-    
+    <string name="search_opportunities">Search Opportunities</string>
+    <string name="full_name">Full Name</string>
+    <string name="confirm_password">Confirm Password</string>
+
     <!-- Authentication -->
     <string name="login">Login</string>
     <string name="register">Register</string>
@@ -26,29 +29,43 @@
     <string name="login_subtitle">Login to continue to Prashiskshan</string>
     <string name="create_account">Create Account</string>
     <string name="register_subtitle">Join Prashiskshan today</string>
-    
+    <string name="hint_name">Enter your full name</string>
+    <string name="hint_email">Use a valid email address</string>
+    <string name="hint_password">Minimum 6 characters</string>
+    <string name="hint_confirm_password">Re-enter password</string>
+
     <!-- Validation -->
     <string name="error_email_required">Email is required</string>
     <string name="error_email_invalid">Please enter a valid email</string>
     <string name="error_password_required">Password is required</string>
     <string name="error_password_short">Password must be at least 6 characters</string>
-    
+
     <!-- User Types -->
     <string name="student">Student</string>
     <string name="faculty">Faculty</string>
     <string name="industry">Industry</string>
     <string name="select_user_type">Select User Type</string>
-    
+
     <!-- Dashboard -->
     <string name="dashboard">Dashboard</string>
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="logout">Logout</string>
-    
+    <string name="courses">Courses</string>
+    <string name="govt_intern">Govt Intern</string>
+    <string name="events_hackathons">Events &amp; Hackathons</string>
+    <string name="top_performers">Top Performers</string>
+    <string name="your_progress">Your Progress</string>
+    <string name="learning_journey">Learning Journey</string>
+    <string name="progress_motivational_text">Keep going! You\'re doing great.</string>
+    <string name="completed_percentage">%d%% Completed</string>
+    <string name="tasks_remaining">%d more tasks to go</string>
+    <string name="notifications">Notifications</string>
+
     <!-- Notification -->
     <string name="default_notification_channel_id">prashiskshan_notifications</string>
     <string name="notification_title">Prashiskshan</string>
-    
+
     <!-- More / Settings -->
     <string name="more">More</string>
     <string name="title_settings">Settings</string>

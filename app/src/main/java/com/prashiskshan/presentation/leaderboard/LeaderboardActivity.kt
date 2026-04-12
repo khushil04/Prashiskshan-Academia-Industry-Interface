@@ -1,6 +1,8 @@
 package com.prashiskshan.presentation.leaderboard
 
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.prashiskshan.databinding.ActivityLeaderboardBinding
@@ -8,6 +10,7 @@ import com.prashiskshan.databinding.ActivityLeaderboardBinding
 class LeaderboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLeaderboardBinding
+    private val viewModel: LeaderboardViewModel by viewModels()
     private lateinit var adapter: LeaderboardAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,46 +18,49 @@ class LeaderboardActivity : AppCompatActivity() {
         binding = ActivityLeaderboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Leaderboard / Achievements"
-
+        setupToolbar()
         setupRecyclerView()
-        loadLeaderboardData()
+        observeViewModel()
+    }
+
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Leaderboard"
     }
 
     private fun setupRecyclerView() {
         adapter = LeaderboardAdapter { item ->
-            // Show details or navigate to profile
-            // For now, just show a toast or navigate
+            // Handle item click if needed
         }
-        binding.rvLeaderboard.layoutManager = LinearLayoutManager(this)
-        binding.rvLeaderboard.adapter = adapter
+        binding.rvLeaderboard.apply {
+            layoutManager = LinearLayoutManager(this@LeaderboardActivity)
+            adapter = this@LeaderboardActivity.adapter
+        }
     }
 
-    private fun loadLeaderboardData() {
-        val leaderboardItems = listOf(
-            LeaderboardItem("1", 1, "Rajesh Kumar", 2450, "Student"),
-            LeaderboardItem("2", 2, "IIT Delhi", 2280, "Institution"),
-            LeaderboardItem("3", 3, "Priya Sharma", 2150, "Student"),
-            LeaderboardItem("4", 4, "NIT Trichy", 1980, "Institution"),
-            LeaderboardItem("5", 5, "Dr. Amit Verma", 1850, "Faculty"),
-            LeaderboardItem("6", 6, "Sneha Patel", 1720, "Student"),
-            LeaderboardItem("7", 7, "BITS Pilani", 1650, "Institution"),
-            LeaderboardItem("8", 8, "Vikram Singh", 1520, "Student"),
-            LeaderboardItem("9", 9, "Dr. Meera Reddy", 1450, "Faculty"),
-            LeaderboardItem("10", 10, "IIIT Hyderabad", 1380, "Institution"),
-            LeaderboardItem("11", 11, "Ananya Das", 1320, "Student"),
-            LeaderboardItem("12", 12, "IIT Bombay", 1280, "Institution"),
-            LeaderboardItem("13", 13, "Arjun Mehta", 1220, "Student"),
-            LeaderboardItem("14", 14, "Dr. Kavita Nair", 1180, "Faculty"),
-            LeaderboardItem("15", 15, "VIT Vellore", 1150, "Institution")
-        )
-        adapter.submitList(leaderboardItems)
+    private fun observeViewModel() {
+        viewModel.leaderboardItems.observe(this) { items ->
+            if (items.isNotEmpty()) {
+                // Update Top 3 UI (static in layout, but we update data)
+                updateTopThree(items.take(3))
+                // Update List (excluding top 3 or showing all)
+                adapter.submitList(items)
+            }
+        }
+
+        viewModel.isLoading.observe(this) { isLoading ->
+            // Show/hide progress bar if you have one
+        }
+    }
+
+    private fun updateTopThree(topThree: List<LeaderboardItem>) {
+        // Logic to update the names and points in the header if they are bound to views
+        // This depends on the specific IDs in your activity_leaderboard.xml
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        finish()
+        onBackPressedDispatcher.onBackPressed()
         return true
     }
 }
-

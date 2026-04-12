@@ -15,12 +15,12 @@ object Constants {
     const val USER_TYPE_INDUSTRY = "industry"
     const val USER_TYPE_ADMIN = "admin"
     
-    // Application Status
-    const val STATUS_PENDING = "pending"
-    const val STATUS_APPROVED = "approved"
-    const val STATUS_REJECTED = "rejected"
-    const val STATUS_COMPLETED = "completed"
-    const val STATUS_ONGOING = "ongoing"
+    // Application Status (Matched with Firestore case-sensitivity)
+    const val STATUS_PENDING = "Pending"
+    const val STATUS_APPROVED = "Approved"
+    const val STATUS_REJECTED = "Rejected"
+    const val STATUS_COMPLETED = "Completed"
+    const val STATUS_ONGOING = "Ongoing"
     
     // Internship Status
     const val INTERNSHIP_ACTIVE = "active"
@@ -39,7 +39,10 @@ object Constants {
     const val PREF_USER_ID = "user_id"
     const val PREF_USER_TYPE = "user_type"
     const val PREF_USER_EMAIL = "user_email"
+    const val PREF_USER_NAME = "user_name"
     const val PREF_IS_LOGGED_IN = "is_logged_in"
+    const val PREF_DARK_MODE = "dark_mode"
+    const val PREF_NOTIFICATIONS_ENABLED = "notifications_enabled"
     
     // Intent Extras
     const val EXTRA_USER_TYPE = "extra_user_type"

@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
@@ -26,6 +27,8 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+
+        applySavedNightMode()
         
         // Initialize Firebase
         initializeFirebase()
@@ -34,6 +37,14 @@ class App : Application() {
         createNotificationChannels()
     }
     
+    private fun applySavedNightMode() {
+        val prefs = getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE)
+        val dark = prefs.getBoolean(Constants.PREF_DARK_MODE, false)
+        AppCompatDelegate.setDefaultNightMode(
+            if (dark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        )
+    }
+
     private fun initializeFirebase() {
         try {
             // Initialize Firebase (if not already initialized)

@@ -11,4 +11,3 @@ data class Event(
     val participants: Int = 0,
     val registrationUrl: String = ""
 )
-

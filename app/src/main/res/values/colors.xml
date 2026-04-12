@@ -3,18 +3,34 @@
     <!-- Primary Colors -->
     <color name="primary">#2196F3</color>
     <color name="primary_dark">#1976D2</color>
-    <color name="primary_light">#BBDEFB</color>
-    <color name="accent">#FF5722</color>
+    <color name="primary_light">#E3F2FD</color>
+    <color name="secondary">#FF4081</color>
+    <color name="accent">#FF4081</color>
+
+    <!-- Analytics Colors -->
+    <color name="analytics_purple">#A294F9</color>
+    <color name="analytics_purple_light">#CDC1FF</color>
+    <color name="analytics_dark_bg">#1A1C1E</color>
+    <color name="analytics_card_bg">#282A2D</color>
+    <color name="analytics_bar_default">#3E4146</color>
+
+    <!-- Dashboard Card Colors -->
+    <color name="card_student">#E8F5E9</color>
+    <color name="card_faculty">#FFF3E0</color>
+    <color name="card_industry">#FCE4EC</color>
+    <color name="card_courses">#F3E5F5</color>
+    <color name="card_govt">#E0F7FA</color>
+    <color name="card_more">#F5F5F5</color>
     
     <!-- Background Colors -->
-    <color name="background">#FFFFFF</color>
+    <color name="background">#FAFAFA</color>
     <color name="background_light">#F5F5F5</color>
     <color name="surface">#FFFFFF</color>
     
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
-    <color name="text_hint">#9E9E9E</color>
+    <color name="text_hint">#BDBDBD</color>
     <color name="text_white">#FFFFFF</color>
     
     <!-- Status Colors -->
@@ -27,7 +43,7 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
-    <color name="divider">#E0E0E0</color>
+    <color name="divider">#EEEEEE</color>
     
     <!-- Leaderboard Rank Colors -->
     <color name="rank_gold">#FFD700</color>

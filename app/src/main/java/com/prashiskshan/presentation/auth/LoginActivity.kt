@@ -1,20 +1,20 @@
 package com.prashiskshan.presentation.auth
 
-import android.os.Bundle
 import android.content.Intent
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuthException
 import com.prashiskshan.databinding.ActivityLoginBinding
+import com.prashiskshan.data.repository.AuthRepository
+import com.prashiskshan.core.Result
+import com.prashiskshan.presentation.student.StudentDashboardActivity
+import com.prashiskshan.presentation.faculty.FacultyDashboardActivity
+import com.prashiskshan.presentation.industry.IndustryDashboardActivity
 import com.prashiskshan.R
-import com.prashiskshan.core.hideKeyboard
-import com.prashiskshan.core.isValidEmail
-import com.prashiskshan.core.isValidPassword
-import com.prashiskshan.data.AuthRepository
-import com.prashiskshan.presentation.common.MainDashboardActivity
+import com.prashiskshan.core.Constants
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -23,237 +23,82 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var authRepository: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Install Splash Screen BEFORE super.onCreate
+        installSplashScreen()
+        
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         authRepository = AuthRepository(this)
-        
+
         // Check if user is already logged in
-        checkIfLoggedIn()
+        if (authRepository.isLoggedIn()) {
+            val userResult = authRepository.getCurrentUser()
+            if (userResult is Result.Success) {
+                navigateToDashboard(userResult.data.role)
+                return
+            }
+        }
 
         setupListeners()
     }
-    
-    private fun checkIfLoggedIn() {
-        if (authRepository.isLoggedIn()) {
-            // User is already logged in, navigate to dashboard
-            navigateToDashboard()
-        }
-    }
 
     private fun setupListeners() {
-        binding.btnLogin.setOnClickListener { attemptLogin() }
+        binding.btnLogin.setOnClickListener {
+            val email = binding.etEmail.text.toString().trim()
+            val password = binding.etPassword.text.toString().trim()
 
-        binding.tvForgotPassword.setOnClickListener {
-            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+            if (email.isEmpty() || password.isEmpty()) {
+                Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val selectedRole = when (binding.toggleRole.checkedButtonId) {
+                R.id.btnRoleStudent -> Constants.USER_TYPE_STUDENT
+                R.id.btnRoleFaculty -> Constants.USER_TYPE_FACULTY
+                R.id.btnRoleIndustry -> Constants.USER_TYPE_INDUSTRY
+                else -> Constants.USER_TYPE_STUDENT
+            }
+
+            binding.progressBar.visibility = View.VISIBLE
+            binding.btnLogin.isEnabled = false
+
+            lifecycleScope.launch {
+                val result = authRepository.login(email, password, selectedRole)
+                
+                binding.progressBar.visibility = View.GONE
+                binding.btnLogin.isEnabled = true
+
+                when (result) {
+                    is Result.Success -> {
+                        navigateToDashboard(selectedRole)
+                    }
+                    is Result.Error -> {
+                        Toast.makeText(this@LoginActivity, result.message ?: "Login Failed", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {}
+                }
+            }
         }
 
         binding.tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
+
+        binding.tvForgotPassword.setOnClickListener {
+            startActivity(Intent(this, ForgotPasswordActivity::class.java))
+        }
     }
 
-    private fun attemptLogin() {
-        val email = binding.etEmail.text.toString().trim()
-        val password = binding.etPassword.text.toString().trim()
-
-        binding.tilEmail.error = null
-        binding.tilPassword.error = null
-
-        // Validate inputs
-        if (email.isEmpty()) {
-            binding.tilEmail.error = getString(R.string.error_email_required)
-            return
+    private fun navigateToDashboard(role: String?) {
+        val intent = when (role?.lowercase()) {
+            Constants.USER_TYPE_FACULTY -> Intent(this, FacultyDashboardActivity::class.java)
+            Constants.USER_TYPE_INDUSTRY -> Intent(this, IndustryDashboardActivity::class.java)
+            else -> Intent(this, StudentDashboardActivity::class.java)
         }
-        if (!email.isValidEmail()) {
-            binding.tilEmail.error = getString(R.string.error_email_invalid)
-            return
-        }
-        if (password.isEmpty()) {
-            binding.tilPassword.error = getString(R.string.error_password_required)
-            return
-        }
-        if (!password.isValidPassword()) {
-            binding.tilPassword.error = getString(R.string.error_password_short)
-            return
-        }
-
-        hideKeyboard()
-        showLoading(true)
-        
-        // Perform Firebase login
-        lifecycleScope.launch {
-            val result = authRepository.login(email, password)
-            
-            showLoading(false)
-            
-            result.fold(
-                onSuccess = { user ->
-                    // Login successful
-                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
-                    navigateToDashboard()
-                },
-                onFailure = { exception ->
-                    // Login failed - show error
-                    handleLoginError(exception)
-                }
-            )
-        }
-    }
-    
-    private fun handleLoginError(exception: Throwable) {
-        val errorMessage = when {
-            exception is FirebaseAuthException -> {
-                when (exception.errorCode) {
-                    "ERROR_INVALID_EMAIL" -> "Invalid email address"
-                    "ERROR_USER_NOT_FOUND" -> "No account found with this email"
-                    "ERROR_WRONG_PASSWORD" -> "Incorrect password"
-                    "ERROR_USER_DISABLED" -> "This account has been disabled"
-                    "ERROR_TOO_MANY_REQUESTS" -> "Too many failed attempts. Please try again later"
-                    "ERROR_NETWORK_REQUEST_FAILED" -> "Network error. Please check your connection"
-                    else -> "Login failed: ${exception.message}"
-                }
-            }
-            exception.message?.contains("network", ignoreCase = true) == true -> {
-                "Network error. Please check your internet connection"
-            }
-            else -> {
-                "Login failed: ${exception.message ?: "Unknown error"}"
-            }
-        }
-        
-        Snackbar.make(binding.root, errorMessage, Snackbar.LENGTH_LONG).show()
-    }
-    
-    private fun navigateToDashboard() {
-        val intent = Intent(this, MainDashboardActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.putExtra(Constants.EXTRA_USER_TYPE, role ?: Constants.USER_TYPE_STUDENT)
         startActivity(intent)
         finish()
     }
-
-    private fun showLoading(show: Boolean) {
-        if (show) {
-            binding.progressBar.visibility = View.VISIBLE
-            binding.btnLogin.isEnabled = false
-            binding.btnLogin.text = ""
-        } else {
-            binding.progressBar.visibility = View.GONE
-            binding.btnLogin.isEnabled = true
-            binding.btnLogin.text = getString(R.string.login)
-        }
-    }
 }
-
-
-
-//package com.prashiskshan.presentation.auth
-//
-//import android.os.Bundle
-//import android.view.View
-//import androidx.appcompat.app.AppCompatActivity
-//import com.google.android.material.snackbar.Snackbar
-//import com.prashiskshan.R
-//import com.prashiskshan.core.isValidEmail
-//import com.prashiskshan.core.isValidPassword
-//import com.prashiskshan.databinding.ActivityLoginBinding
-//
-//class LoginActivity : AppCompatActivity() {
-//
-//    private lateinit var binding: ActivityLoginBinding
-//
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        binding = ActivityLoginBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        setupUI()
-//        setupListeners()
-//    }
-//
-//    private fun setupUI() {
-//        // Hide action bar for login screen
-//        supportActionBar?.hide()
-//    }
-//
-//    private fun setupListeners() {
-//        binding.btnLogin.setOnClickListener {
-//            attemptLogin()
-//        }
-//
-//        binding.tvForgotPassword.setOnClickListener {
-//            Snackbar.make(
-//                binding.root,
-//                "Forgot Password feature coming soon!",
-//                Snackbar.LENGTH_SHORT
-//            ).show()
-//        }
-//
-//        binding.tvRegister.setOnClickListener {
-//            Snackbar.make(
-//                binding.root,
-//                "Registration feature coming soon!",
-//                Snackbar.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
-//
-//    private fun attemptLogin() {
-//        // Get email and password
-//        val email = binding.etEmail.text.toString().trim()
-//        val password = binding.etPassword.text.toString().trim()
-//
-//        // Reset errors
-//        binding.tilEmail.error = null
-//        binding.tilPassword.error = null
-//
-//        // Validate inputs
-//        var isValid = true
-//
-//        if (email.isEmpty()) {
-//            binding.tilEmail.error = getString(R.string.error_email_required)
-//            isValid = false
-//        } else if (!email.isValidEmail()) {
-//            binding.tilEmail.error = getString(R.string.error_email_invalid)
-//            isValid = false
-//        }
-//
-//        if (password.isEmpty()) {
-//            binding.tilPassword.error = getString(R.string.error_password_required)
-//            isValid = false
-//        } else if (!password.isValidPassword()) {
-//            binding.tilPassword.error = getString(R.string.error_password_short)
-//            isValid = false
-//        }
-//
-//        if (!isValid) {
-//            return
-//        }
-//
-//        // Show loading
-//        showLoading(true)
-//
-//        // Simulate login (for demo purposes)
-//        binding.root.postDelayed({
-//            showLoading(false)
-//            Snackbar.make(
-//                binding.root,
-//                "Login Demo - Email: $email\nFirebase integration will be added in next phase",
-//                Snackbar.LENGTH_LONG
-//            ).show()
-//        }, 1500)
-//    }
-//
-//    private fun showLoading(show: Boolean) {
-//        if (show) {
-//            binding.progressBar.visibility = View.VISIBLE
-//            binding.btnLogin.isEnabled = false
-//            binding.btnLogin.text = ""
-//        } else {
-//            binding.progressBar.visibility = View.GONE
-//            binding.btnLogin.isEnabled = true
-//            binding.btnLogin.text = getString(R.string.login)
-//        }
-//    }
-//}

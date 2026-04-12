@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#90CAF9</color>
+    <color name="primary_dark">#42A5F5</color>
+    <color name="primary_light">#1E3A5F</color>
+    <color name="accent">#FF80AB</color>
+
+    <color name="analytics_purple">#A294F9</color>
+    <color name="analytics_purple_light">#8B7FD9</color>
+    <color name="analytics_dark_bg">#1A1C1E</color>
+    <color name="analytics_card_bg">#282A2D</color>
+    <color name="analytics_bar_default">#3E4146</color>
+
+    <color name="card_student">#1B3D2F</color>
+    <color name="card_faculty">#3D2E1B</color>
+    <color name="card_industry">#3D1B2A</color>
+    <color name="card_courses">#2E1B3D</color>
+    <color name="card_govt">#1B3538</color>
+    <color name="card_more">#2C2C2C</color>
+
+    <color name="background">#121212</color>
+    <color name="background_light">#1E1E1E</color>
+    <color name="surface">#1E1E1E</color>
+
+    <color name="text_primary">#EEEEEE</color>
+    <color name="text_secondary">#B0B0B0</color>
+    <color name="text_hint">#757575</color>
+    <color name="text_white">#FFFFFF</color>
+
+    <color name="success">#81C784</color>
+    <color name="error">#EF5350</color>
+    <color name="warning">#FFB74D</color>
+    <color name="info">#64B5F6</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="divider">#333333</color>
+
+    <color name="rank_gold">#FFD700</color>
+    <color name="rank_silver">#C0C0C0</color>
+    <color name="rank_bronze">#CD7F32</color>
+</resources>

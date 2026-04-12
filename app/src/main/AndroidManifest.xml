@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" 
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="32"
         tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
@@ -28,111 +28,104 @@
         android:theme="@style/Theme.Prashiskshan"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
-        <!-- Splash/Launch Activity -->
         <activity
             android:name=".presentation.auth.LoginActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Prashiskshan.Splash">
+            android:exported="false" />
+        <!-- Splash/Launch Activity -->
+        <activity
+            android:name=".presentation.ui.SplashActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- Authentication Activities -->
+        </activity> <!-- Authentication Activities -->
         <activity
             android:name=".presentation.auth.RegisterActivity"
             android:exported="false"
             android:parentActivityName=".presentation.auth.LoginActivity" />
-
         <activity
             android:name=".presentation.auth.ForgotPasswordActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.auth.LoginActivity" />
-
-        <!-- Student Activities -->
+            android:parentActivityName=".presentation.auth.LoginActivity" /> <!-- Student Activities -->
         <activity
             android:name=".presentation.student.StudentDashboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.student.InternshipListActivity"
             android:exported="false"
             android:parentActivityName=".presentation.student.StudentDashboardActivity" />
-
+        <activity
+            android:name=".presentation.student.AppliedInternshipsActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.student.StudentDashboardActivity" />
         <activity
             android:name=".presentation.student.LogbookActivity"
             android:exported="false"
             android:parentActivityName=".presentation.student.StudentDashboardActivity" />
-
+        <activity
+            android:name=".presentation.student.AddLogbookActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.student.LogbookActivity" />
         <activity
             android:name=".presentation.student.ReportActivity"
             android:exported="false"
             android:parentActivityName=".presentation.student.StudentDashboardActivity" />
-
         <activity
             android:name=".presentation.student.ProfileActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.student.StudentDashboardActivity" />
-
-        <!-- Faculty Activities -->
+            android:parentActivityName=".presentation.student.StudentDashboardActivity" /> <!-- Faculty Activities -->
         <activity
             android:name=".presentation.faculty.FacultyDashboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.faculty.ApprovalsActivity"
             android:exported="false"
             android:parentActivityName=".presentation.faculty.FacultyDashboardActivity" />
-
         <activity
             android:name=".presentation.faculty.MonitorStudentsActivity"
             android:exported="false"
             android:parentActivityName=".presentation.faculty.FacultyDashboardActivity" />
-
-        <!-- Industry Activities -->
+        <activity
+            android:name=".presentation.faculty.PostEventActivity"
+            android:exported="false"
+            android:parentActivityName=".presentation.faculty.FacultyDashboardActivity" /> <!-- Industry Activities -->
         <activity
             android:name=".presentation.industry.IndustryDashboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.industry.PostInternshipActivity"
             android:exported="false"
             android:parentActivityName=".presentation.industry.IndustryDashboardActivity" />
-
         <activity
             android:name=".presentation.industry.ApplicantsActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.industry.IndustryDashboardActivity" />
-
-        <!-- Common Activities -->
+            android:parentActivityName=".presentation.industry.IndustryDashboardActivity" /> <!-- Common Activities -->
         <activity
             android:name=".presentation.common.MainDashboardActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.common.NotificationsActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.common.SettingsActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.common.AboutActivity"
             android:exported="false" />
-
         <activity
             android:name=".presentation.common.MoreActivity"
             android:exported="false"
             android:theme="@style/Theme.Prashiskshan.NoActionBar" />
-
         <activity
             android:name=".presentation.common.ProfileManagementActivity"
-            android:exported="false" />
-
-        <!-- Courses -->
+            android:exported="false" /> <!-- Chat Activity -->
+        <activity
+            android:name=".presentation.chat.ChatActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Prashiskshan.NoActionBar" /> <!-- Courses -->
         <activity
             android:name=".presentation.courses.CoursesActivity"
             android:exported="false"
@@ -140,42 +133,30 @@
         <activity
             android:name=".presentation.courses.CourseWebViewActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.courses.CoursesActivity" />
-
-        <!-- Govt Internships -->
+            android:parentActivityName=".presentation.courses.CoursesActivity" /> <!-- Govt Internships -->
         <activity
             android:name=".presentation.govt.GovtInternshipsActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.common.MainDashboardActivity" />
-
-        <!-- Events / Hackathons -->
+            android:parentActivityName=".presentation.common.MainDashboardActivity" /> <!-- Events / Hackathons -->
         <activity
             android:name=".presentation.events.EventsActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.common.MainDashboardActivity" />
-
-        <!-- Leaderboard / Achievements -->
+            android:parentActivityName=".presentation.common.MainDashboardActivity" /> <!-- Leaderboard / Achievements -->
         <activity
             android:name=".presentation.leaderboard.LeaderboardActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.common.MainDashboardActivity" />
-
-        <!-- Progress Analytics -->
+            android:parentActivityName=".presentation.common.MainDashboardActivity" /> <!-- Progress Analytics -->
         <activity
             android:name=".presentation.analytics.ProgressAnalyticsActivity"
             android:exported="false"
-            android:parentActivityName=".presentation.common.MainDashboardActivity" />
-
-        <!-- Firebase Cloud Messaging Service -->
+            android:parentActivityName=".presentation.common.MainDashboardActivity" /> <!-- Firebase Cloud Messaging Service -->
         <service
             android:name=".utils.NotificationHelper"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- Default notification channel for Firebase -->
+        </service> <!-- Default notification channel for Firebase -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_notification" />
@@ -183,10 +164,8 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/primary" />
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:name="com.google.firebase.messaging.default_notification_id"
             android:value="@string/default_notification_channel_id" />
-
     </application>
 
 </manifest>
-

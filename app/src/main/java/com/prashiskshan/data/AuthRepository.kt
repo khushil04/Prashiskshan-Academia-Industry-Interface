@@ -26,22 +26,36 @@ class AuthRepository(private val context: Context) {
      * Check if user is logged in
      */
     fun isLoggedIn(): Boolean {
-        return auth.currentUser != null && prefs.getBoolean(Constants.PREF_IS_LOGGED_IN, false)
+         return auth.currentUser != null && prefs.getBoolean(Constants.PREF_IS_LOGGED_IN, false)
     }
     
     /**
-     * Login with email and password
+     * Login with email and password and verify role
      */
-    suspend fun login(email: String, password: String): kotlin.Result<FirebaseUser> {
+    suspend fun login(email: String, password: String, expectedRole: String): kotlin.Result<Unit> {
         return try {
             val result = auth.signInWithEmailAndPassword(email, password).await()
             val user = result.user
             if (user != null) {
-                // Save session
-                saveUserSession(user.uid, user.email ?: "")
-                // Fetch user type from Firestore
-                fetchAndSaveUserType(user.uid)
-                kotlin.Result.success(user)
+                // Fetch user data to verify role
+                val document = firestore.collection(Constants.COLLECTION_USERS)
+                    .document(user.uid)
+                    .get()
+                    .await()
+                
+                val actualRole = document.getString("userType") ?: Constants.USER_TYPE_STUDENT
+                
+                // Role verification logic
+                val isRoleMatch = actualRole.equals(expectedRole, ignoreCase = true)
+
+                if (isRoleMatch) {
+                    saveUserSession(user.uid, user.email ?: "", actualRole)
+                    kotlin.Result.success(Unit)
+                } else {
+                    // Sign out if role doesn't match to prevent unauthorized access
+                    auth.signOut()
+                    kotlin.Result.failure(Exception("Unauthorized: This account is registered as $actualRole, not $expectedRole."))
+                }
             } else {
                 kotlin.Result.failure(Exception("Login failed: User is null"))
             }
@@ -58,14 +72,12 @@ class AuthRepository(private val context: Context) {
         email: String,
         password: String,
         userType: String = Constants.USER_TYPE_STUDENT
-    ): kotlin.Result<FirebaseUser> {
+    ): kotlin.Result<Unit> {
         return try {
-            // Create user in Firebase Auth
             val authResult = auth.createUserWithEmailAndPassword(email, password).await()
             val user = authResult.user
             
             if (user != null) {
-                // Save user data to Firestore
                 val userData = hashMapOf(
                     "name" to name,
                     "email" to email,
@@ -79,10 +91,8 @@ class AuthRepository(private val context: Context) {
                     .set(userData)
                     .await()
                 
-                // Save session
                 saveUserSession(user.uid, email, userType)
-                
-                kotlin.Result.success(user)
+                kotlin.Result.success(Unit)
             } else {
                 kotlin.Result.failure(Exception("Registration failed: User is null"))
             }
@@ -115,24 +125,6 @@ class AuthRepository(private val context: Context) {
     }
     
     /**
-     * Fetch user type from Firestore and save to preferences
-     */
-    private suspend fun fetchAndSaveUserType(userId: String) {
-        try {
-            val document = firestore.collection(Constants.COLLECTION_USERS)
-                .document(userId)
-                .get()
-                .await()
-            
-            val userType = document.getString("userType") ?: Constants.USER_TYPE_STUDENT
-            prefs.edit().putString(Constants.PREF_USER_TYPE, userType).apply()
-        } catch (e: Exception) {
-            // If fetch fails, use default
-            prefs.edit().putString(Constants.PREF_USER_TYPE, Constants.USER_TYPE_STUDENT).apply()
-        }
-    }
-    
-    /**
      * Clear user session
      */
     private fun clearUserSession() {
@@ -159,4 +151,3 @@ class AuthRepository(private val context: Context) {
         return prefs.getString(Constants.PREF_USER_ID, null)
     }
 }
-

@@ -1,7 +1,11 @@
 package com.prashiskshan.presentation.events
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -34,10 +38,23 @@ class EventAdapter(
             binding.tvEventStatus.text = event.status
             binding.tvEventParticipants.text = "${event.participants} Registered"
             
+            if (event.registrationUrl.isNotEmpty()) {
+                binding.btnRegister.visibility = View.VISIBLE
+                binding.btnRegister.setOnClickListener {
+                    try {
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.registrationUrl))
+                        it.context.startActivity(intent)
+                    } catch (e: Exception) {
+                        Toast.makeText(it.context, "Invalid link", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                binding.btnRegister.visibility = View.GONE
+            }
+
             binding.root.setOnClickListener {
                 onEventClick(event)
             }
         }
     }
 }
-
